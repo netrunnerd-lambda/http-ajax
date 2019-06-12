@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, NavLink } from 'react-router-dom';
 
 import FriendsList from './components/FriendsList';
+import FriendForm from './components/FriendForm';
 
 class App extends Component {
   state = {
@@ -16,9 +17,10 @@ class App extends Component {
         <h1 className="main">{`${name}'s Friends List`}</h1>
         <nav className="nav">
           <NavLink to="/add">Add Friend</NavLink>
-          <NavLink to="/">Friends List</NavLink>
+          <NavLink exact to="/">Friends List</NavLink>
         </nav>
         <Route exact component={FriendsList} path="/" />
+        <Route component={FriendForm} path="/add" />
       </>
     );
   }
