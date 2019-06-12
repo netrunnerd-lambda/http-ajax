@@ -1,25 +1,32 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 
-class FriendsList extends Component {
-  renderFriend(friend) {
-    const { name, age, email } = friend;
+import Friend from './Friend';
 
-    return (
-      <div className="friend">
-        <h2>{name} ({age})</h2>
-        <h3>{email}</h3>
-      </div>
-    );
+class FriendsList extends Component {
+  state = {
+    friends: []
+  };
+
+  removeFriend = id => {
+    axios.delete(`http://localhost:5000/friends/${id}`)
+      .then(r => this.setState({ friends: r.data }))
+      .catch(err => console.log(err));
+  };
+
+  componentDidMount() {
+    axios.get('http://localhost:5000/friends')
+      .then(r => this.setState({ friends: r.data }))
+      .catch(err => console.log(err));
   }
 
   render() {
-    const friends = this.props.friends,
-          renderFriend = this.renderFriend;
+    const friends = this.state.friends,
+          removeFriend = this.removeFriend;
 
     return (
       <section className="friends-list">
-        {friends.map(f => renderFriend(f))}
+        {friends.map(f => <Friend key={f.id} {...f} removeFriend={removeFriend} />)}
       </section>
     );
   }

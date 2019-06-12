@@ -4,12 +4,87 @@
   padding: 0;
 }
 
+html {
+  background-color: rgb(250, 250, 250);
+}
+
 #root {
   font-family: sans-serif;
-  margin: 0 auto;
+  margin: 1rem auto;
   max-width: 666px;
 }
 
 .main {
   text-align: center;
 }
+
+.nav {
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.nav a {
+  color: seagreen;
+  margin: 0 1rem;
+  text-decoration: none;
+  transition: 0.5s;
+}
+
+.nav a:hover {
+  color: inherit;
+}
+
+.nav a.active {
+  font-weight: bold;
+}
+
+.friend {
+  background-color: black;
+  border-radius: 5px;
+  color: white;
+  margin: 1rem auto;
+  padding: 1rem;
+  max-width: 420px;
+}
+
+.friend hr {
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  margin: 1rem 0;
+}
+
+.friend-header {
+  align-tiems: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.friend-header button {
+  background: rgb(0, 255, 0);
+  border: none;
+  border-radius: 100%;
+  color: black;
+  cursor: pointer;
+  height: 20px;
+  transition: 0.25s;
+  width: 20px;
+}
+
+.friend-header button:hover {
+  background: rgb(255, 0, 0);
+}
+
+.friend-header h2 {
+  font-weight: normal;
+}
+
+.friend a {
+  color: lightgrey;
+  text-decoration: none;
+  transition: 0.5s;
+}
+
+.friend a:hover {
+  color: inherit;
+  text-decoration: underline;
+}
+
