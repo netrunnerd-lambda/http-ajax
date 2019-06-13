@@ -21,6 +21,7 @@ class App extends Component {
         </nav>
         <Route exact component={FriendsList} path="/" />
         <Route component={FriendForm} path="/add" />
+        <Route component={FriendForm} path="/edit/:id" />
       </>
     );
   }

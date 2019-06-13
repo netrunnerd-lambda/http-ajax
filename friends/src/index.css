@@ -27,7 +27,6 @@ html {
   color: seagreen;
   margin: 0 1rem;
   text-decoration: none;
-  transition: 0.5s;
 }
 
 .nav a:hover {
@@ -100,6 +99,14 @@ html {
   padding: 1rem;
 }
 
+.friend-form p {
+  color: seagreen;
+  font-variant: small-caps;
+  margin-top: 0.5rem;
+  text-align: center;
+  width: 100%;
+}
+
 .friend-form button {
   background: seagreen;
   border: none;
@@ -118,8 +125,13 @@ html {
 }
 
 .friend-form input {
+  border: 1px solid lightgrey;
   margin: 0.5rem 0;
   padding: 0.5rem;
+}
+
+.friend-form input:focus {
+  border-color: seagreen;
 }
 
 .fname {

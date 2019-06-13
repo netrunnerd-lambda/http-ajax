@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Friend(f) {
   const { id, name, age, email, removeFriend } = f;
@@ -6,7 +7,9 @@ function Friend(f) {
   return (
     <div className="friend">
       <section className="friend-header">
-        <h2>{name} ({age})</h2>
+        <Link to={`/edit/${id}`}>
+          <h2>{name} ({age})</h2>
+        </Link>
         {removeFriend && <button onClick={_ => removeFriend(id) }> </button>}
       </section>
       <hr />
