@@ -1,108 +1,103 @@
-import axios from 'axios';
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import ReactTimeout from 'react-timeout';
 
 class FriendForm extends Component {
   state = {
-    friendName: '',
-    friendAge: '',
-    friendEmail: '',
     editing: false,
-    endpoint: 'http://localhost:5000/friends',
-    updated: false,
-    url: this.props.match.url
+    friend: this.props.toUpdate || {
+      name: '',
+      age: '',
+      email: ''
+    },
+    redirect: false,
+    updated: false
+  };
+
+  addFriend = _ => {
+    this.props.addFriend(this.props.endpoint, {
+      ...this.state.friend
+    });
+  };
+
+  updateFriend = _ => {
+    const url = `${this.props.endpoint}/${this.props.match.params.id}`;
+
+    this.props.updateFriend(url, {
+      ...this.state.friend
+    });
+
+    this.setState({ updated: true });
   };
 
   handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+    const friend = {
+      ...this.state.friend,
+      [e.target.name]: e.target.value
+    };
 
-  addFriend = (url, o) => {
-    axios.post(url, o);
-  };
-
-  getFriend = url => {
-    axios.get(url)
-      .then(r => {
-        const friend = r.data.find(f => `${f.id}` === this.props.match.params.id);
-        this.setState({
-          friendName: friend.name,
-          friendAge: friend.age,
-          friendEmail: friend.email
-        });
-      })
-      .catch(err => console.log(err));
-  };
-
-  updateFriend = (url, o) => {
-    const id = this.props.match.params.id;
-
-    axios.put(`${url}/${id}`, o);
+    this.setState({ friend });
   };
 
   handleSubmit = e => {
     e.preventDefault();
 
-    const { friendName,
-            friendAge,
-            friendEmail,
-            url } = this.state;
+    const { name, age, email } = this.state.friend;
 
-    const friend = {
-      name: friendName,
-      age: friendAge,
-      email: friendEmail
-    };
-    
-    if (!friendName || !friendAge || !friendEmail)
+    if (!name || !age || !email)
       return;
 
-    if (url === "/add") {
-      this.addFriend(this.state.endpoint, friend);
-      this.setState({ friendName: '', friendAge: '', friendEmail: '' });
-    } else {
-      this.updateFriend(this.state.endpoint, friend);
-      this.setState({ updated: true });
-      this.props.setTimeout(_ => this.setState({ updated: false }), 4200);
-    }
+    if (this.state.editing)
+      this.updateFriend();
+    else
+      this.addFriend();
+
+    this.setState({ friend: {
+      name: '',
+      age: '',
+      email: ''
+    }});
+
+    this.props.setTimeout(_ => this.setState({ redirect: !this.state.redirect }), 1000);
   };
 
   componentDidMount() {
-    if (this.state.url.includes("/edit")) {
-      this.setState({ editing: true });
-      this.getFriend(this.state.endpoint);
-    }
+    if (this.props.toUpdate)
+      this.setState({ editing: !this.state.editing });
   }
 
   render() {
+    if (this.state.redirect)
+      return <Redirect to="/" />
+
     return (
       <form className="friend-form" onSubmit={this.handleSubmit}>
         <input 
           className="fname"
-          name="friendName" 
+          name="name" 
           onChange={this.handleChange}
           placeholder="Name"
           type="text" 
-          value={this.state.friendName}
+          value={this.state.friend.name}
         />
         <input
           className="fage"
-          name="friendAge"
+          name="age"
           onChange={this.handleChange}
           placeholder="Age"
           type="number"
-          value={this.state.friendAge}
+          value={this.state.friend.age}
         />
         <input
           className="femail"
-          name="friendEmail"
+          name="email"
           onChange={this.handleChange}
           placeholder="Email"
           type="email"
-          value={this.state.friendEmail}
+          value={this.state.friend.email}
         />
         <button type="submit">
-          {`${this.state.editing ? 'update' : 'add'} friend`}
+          {this.state.editing ? 'UPDATE' : 'ADD'}
         </button>
         {this.state.updated && <p>information updated</p>}
       </form>

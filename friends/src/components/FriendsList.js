@@ -1,32 +1,21 @@
-import axios from 'axios';
 import React, { Component } from 'react';
 
 import Friend from './Friend';
 
 class FriendsList extends Component {
-  state = {
-    friends: []
-  };
-
   removeFriend = id => {
-    axios.delete(`http://localhost:5000/friends/${id}`)
-      .then(r => this.setState({ friends: r.data }))
-      .catch(err => console.log(err));
+    this.props.deleteFriend(this.props.endpoint, id);
   };
-
-  componentDidMount() {
-    axios.get('http://localhost:5000/friends')
-      .then(r => this.setState({ friends: r.data }))
-      .catch(err => console.log(err));
-  }
 
   render() {
-    const friends = this.state.friends,
-          removeFriend = this.removeFriend;
-
     return (
       <section className="friends-list">
-        {friends.map(f => <Friend key={f.id} {...f} removeFriend={removeFriend} />)}
+        {this.props.friends.map(f => <Friend
+                                       key={f.id}
+                                       {...f} 
+                                       editFriend={this.props.editFriend}
+                                       removeFriend={this.removeFriend} 
+                                     />)}
       </section>
     );
   }
